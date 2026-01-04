@@ -3,7 +3,7 @@
 local expectedGames = {
    [102574559184919] = {
       name = "Craft Food",
-      scriptUrl = "https://raw.githubusercontent.com/mosscs/repo/main/craftfood.lua"
+      scriptUrl = "https://raw.githubusercontent.com/mosscs/moss-hub/main/craftfood.lua"
 }
 
 local currentPlaceId = game.PlaceId
