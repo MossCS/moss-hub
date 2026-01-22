@@ -1,22 +1,27 @@
 -- Moss Hub Loader 
 
-local expectedGames = {
-   [102574559184919] = {
-      name = "Craft Food",
-      scriptUrl = "https://raw.githubusercontent.com/mosscs/moss-hub/main/craftfood.lua"
+local Loader_Module = {
+    Source = ""
 }
 
-local currentPlaceId = game.PlaceId
-local gameData = expectedGames[currentPlaceId]
+Loader_Module.gameMap = {
+    [102574559184919] = "CraftFood", 
+}
 
-if gameData then
-   print("Game terdeteksi: " .. gameData.name .. " (PlaceId: " .. currentPlaceId .. ")")
-   print("Memuat script khusus untuk game ini...")
- loadstring(game:HttpGet(gameData.scriptUrl, true))()
-   
-else
-   local msg = "Script nya ga support game ini kocakk!\n"
-   msg = msg .. "\n -- Made by MossC."
-   
-   game.Players.LocalPlayer:Kick(msg)
+function Loader_Module:LoadScript(id)
+    local gameName = Loader_Module.gameMap[id]
+    if not gameName then
+        warn("Game tidak support! PlaceId: " .. id)
+        game.Players.LocalPlayer:Kick("Script ini tidak support game ini! PlaceId: " .. id .. "\nScript by MossC"))
+        return  
+    end
+
+    local success, err = pcall(function()
+        loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/MossC/moss-hub/refs/heads/main/"..gameName.."/"..Loader_Module.Source..".lua"))()
+    end)
+    if not success then
+        warn("Something went wrong | ", err)
+    end
 end
+
+return Loader_Module
